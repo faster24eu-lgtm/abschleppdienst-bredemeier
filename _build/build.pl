@@ -407,7 +407,7 @@ H
   'hannover' => {
     title => 'Abschleppdienst Hannover 24/7 – Pannenhilfe auf A2 & A7',
     desc  => "Panne in Hannover oder am Kreuz Hannover-Ost? Abschleppdienst und Pannenhilfe rund um die Uhr, Preis vor der Fahrt. $TELH",
-    html  => <<'H'},
+    html  => <<'H',
 <h2>Abschleppdienst in Hannover</h2>
 <p>In und um Hannover kreuzen sich A2 und A7, dazu kommen der Messeschnellweg und viel Stadtverkehr. Wir vermitteln Pannenhilfe und Abschleppen in Hannover und auf dem Weg nach Westen Richtung Schaumburg.</p>
 <h3>In der Stadt</h3>
@@ -417,15 +417,58 @@ H
 <li><strong>E-Auto:</strong> Elektroautos werden auf dem Plateau transportiert, nicht geschleppt. Sagen Sie uns das Modell.</li>
 </ul>
 <p>Stehen Sie auf der Autobahn, lesen Sie zuerst unsere Hinweise zur <a href="/panne-a2/">Panne auf der A2</a>.</p>
+<h3>Auf der Autobahn rund um Hannover</h3>
+<p>Am Kreuz Hannover-Ost treffen sich A2 und A7, dazu kommen der Messeschnellweg (A37) und die Schnellwege durch die Stadt. Bei einer Panne auf der Autobahn gilt immer: Warnblinker an, Warnweste anziehen, alle Insassen hinter die Leitplanke, dann das Warndreieck mit Abstand aufstellen. Erst danach anrufen. Sagen Sie uns die Autobahn, die Fahrtrichtung und das letzte Schild oder den Kilometer am Fahrbahnrand.</p>
+<p>Auf dem Westschnellweg und dem Südschnellweg gibt es kaum Haltebuchten. Bleiben Sie dort im Auto angeschnallt, wenn Sie nicht sicher hinter eine Leitplanke kommen, und rufen Sie bei Gefahr zuerst die 110.</p>
+<h3>Wo wir in Hannover helfen</h3>
+<p>Wir vermitteln Pannenhilfe und Abschleppen in allen Stadtteilen, zum Beispiel in Linden, List, der Südstadt, Döhren, Vahrenwald, Bothfeld, Kirchrode oder Ricklingen. Auch rund um die Messe, am Flughafen in Langenhagen und in den Städten der Region wie Garbsen, Seelze, Laatzen und Lehrte rufen wir einen Betrieb aus der Nähe für Sie an.</p>
+<p>Auf dem Weg nach Westen führt die A2 an Garbsen und Wunstorf vorbei Richtung <a href="/abschleppdienst-bad-nenndorf/">Bad Nenndorf</a> und <a href="/abschleppdienst-auetal/">Auetal</a>. Dort liegt unser Schwerpunkt, den ganzen Überblick finden Sie unter <a href="/regionen/">Regionen</a>.</p>
+<h3>Typische Einsätze in Hannover</h3>
+<ul>
+<li>Batterie leer nach einer kalten Nacht: Starthilfe vor der Haustür oder auf dem Firmenparkplatz</li>
+<li>Reifenpanne auf dem Weg zur Messe oder zum Flughafen</li>
+<li>Auto nach einem Unfall nicht mehr fahrbereit: Abschleppen zur Werkstatt Ihrer Wahl</li>
+<li>Transporter oder Wohnmobil liegengeblieben: Wir suchen einen Betrieb mit passendem Fahrzeug</li>
+</ul>
+<h3>Nachts, am Wochenende, an Feiertagen</h3>
+<p>Pannen halten sich nicht an Öffnungszeiten. Wir sind rund um die Uhr erreichbar, auch nachts und an Feiertagen. Hat Ihre Werkstatt geschlossen, bringt der Betrieb das Auto auf Wunsch zuerst zu Ihnen nach Hause oder auf einen sicheren Stellplatz und am nächsten Werktag weiter. Sagen Sie uns am Telefon, was Ihnen lieber ist, dann planen wir das gleich mit ein.</p>
+<p>Wichtig für die Werkstatt: Legen Sie Fahrzeugschein und Schlüssel bereit und notieren Sie, was vor der Panne passiert ist, zum Beispiel ein Geräusch, eine Warnleuchte oder Rauch. Das spart später Zeit bei der Fehlersuche.</p>
+<h3>Was kostet ein Abschleppdienst in Hannover?</h3>
+<p>Das hängt von der Strecke, der Uhrzeit und dem Fahrzeug ab. Sie hören den Preis am Telefon, bevor jemand losfährt, und entscheiden dann. Sind Sie im ADAC oder haben Sie einen Schutzbrief, rufen Sie zuerst dort an; dann zahlt meistens der Club oder die Versicherung.</p>
 H
+    faq => [
+      ['Helfen Sie auch am Kreuz Hannover-Ost?', 'Ja. Sagen Sie uns, ob Sie auf der A2 oder der A7 stehen, die Fahrtrichtung und das letzte Schild. Sichern Sie zuerst die Unfallstelle und gehen Sie hinter die Leitplanke.'],
+      ['Kommen Sie auch nach Langenhagen, Garbsen oder Laatzen?', 'Ja. Wir vermitteln Hilfe in der ganzen Region Hannover und auf der A2 Richtung Schaumburg.'],
+      ['Mein Auto steht in einer Tiefgarage. Geht das?', 'Oft ja. Sagen Sie uns die Einfahrtshöhe, dann schicken wir einen Betrieb mit einem passenden, niedrigen Fahrzeug.'],
+      ['Was kostet ein Abschleppdienst in Hannover?', 'Das hängt von Strecke, Uhrzeit und Fahrzeug ab. Den Preis nennen wir am Telefon, bevor jemand losfährt.'],
+    ],
+  },
 );
+
+sub region_faq_html {
+  my ($slug) = @_; my $q = $R{$slug}{faq} or return '';
+  my $out = qq{<h3>Häufige Fragen</h3><div class="faq">};
+  $out .= qq{<details><summary>$_->[0]</summary><p>$_->[1]</p></details>} for @$q;
+  return "$out</div>";
+}
+sub region_ld {
+  my ($slug, $name) = @_;
+  my $ld = qq{<script type="application/ld+json">{"\@context":"https://schema.org","\@type":"Service","serviceType":"Abschleppdienst und Pannenhilfe","name":"Abschleppdienst $name","url":"$SITE/abschleppdienst-$slug/","areaServed":{"\@type":"City","name":"$name"},"provider":{"\@id":"$SITE/#business"},"availableChannel":{"\@type":"ServiceChannel","servicePhone":{"\@type":"ContactPoint","telephone":"$TELH","contactType":"customer service","hoursAvailable":"Mo-Su 00:00-23:59"}}}</script>\n};
+  my $q = $R{$slug}{faq};
+  if ($q) {
+    my $items = join ',', map { (my $a1 = $_->[0]) =~ s/"/\\"/g; (my $b1 = $_->[1]) =~ s/"/\\"/g; qq{{"\@type":"Question","name":"$a1","acceptedAnswer":{"\@type":"Answer","text":"$b1"}}} } @$q;
+    $ld .= qq{<script type="application/ld+json">{"\@context":"https://schema.org","\@type":"FAQPage","mainEntity":[$items]}</script>\n};
+  }
+  return $org_ld . $ld;
+}
 for my $r (@REGIONS) {
   my ($slug, $name) = @$r;
   page(
     path => "/abschleppdienst-$slug/", tab => '/regionen/',
     title => $R{$slug}{title}, desc => $R{$slug}{desc},
     h1 => "Abschleppdienst $name",
-    feed => post(sub => "$name · 24/7", html => $R{$slug}{html}) . $steps,
+    ld => region_ld($slug, $name),
+    feed => post(sub => "$name · 24/7", html => $R{$slug}{html} . region_faq_html($slug)) . $steps,
   );
 }
 
