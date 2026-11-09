@@ -11,7 +11,7 @@ my $TEL   = '+4917641956993';
 my $TELH  = '+49 176 41956993';
 my $WA    = 'https://wa.me/4917641956993?text=Hallo%2C%20ich%20brauche%20Pannenhilfe.%20Mein%20Standort%3A';
 my $MAIL  = 'faster24eu@gmail.com';
-my $TODAY = '2026-10-27';
+my $TODAY = '2026-11-09';
 
 my @TABS = (
   ['/', 'Start'], ['/pannenhilfe/', 'Pannenhilfe'], ['/truckservice/', 'LKW & Transporter'],
@@ -22,17 +22,20 @@ my @TABS = (
 my @REGIONS = (
   ['auetal', 'Auetal'], ['rinteln', 'Rinteln'], ['bueckeburg', 'Bückeburg'],
   ['stadthagen', 'Stadthagen'], ['bad-nenndorf', 'Bad Nenndorf'], ['minden', 'Minden'],
-  ['hannover', 'Hannover'],
+  ['hannover', 'Hannover'], ['porta-westfalica-bad-oeynhausen', 'Porta Westfalica & Bad Oeynhausen'],
+  ['hameln', 'Hameln'], ['wunstorf-barsinghausen', 'Wunstorf & Barsinghausen'],
 );
 
 sub post {
   my (%a) = @_;
   my $sub = $a{sub} // 'Pannenhilfe Nord · 24/7';
-  my $img = $a{img} ? qq{<div class="post-img"><img src="$a{img}" alt="$a{alt}" width="1600" height="1200" loading="lazy"></div>} : '';
+  my $src = $a{img} // ''; my $srcset = '';
+  if ($src eq '/assets/cover.jpg') { $src = '/assets/cover-1200.webp'; $srcset = ' srcset="/assets/cover-800.webp 800w, /assets/cover-1200.webp 1200w" sizes="(max-width:700px) 100vw, 640px"'; }
+  my $img = $a{img} ? qq{<div class="post-img"><img src="$src"$srcset alt="$a{alt}" width="1200" height="900" loading="lazy"></div>} : '';
   my $bar = ($a{bar} // 1) ? qq{<div class="post-bar"><a href="tel:$TEL">📞 Anrufen</a><a href="$WA" target="_blank" rel="noopener">💬 WhatsApp</a><a href="/kontakt/">✉️ Kontakt</a></div>} : '';
   return <<"H";
 <article class="post">
-<div class="post-head"><div class="post-av"><img src="/assets/logo.png" alt="" width="40" height="40"></div><div><div class="post-name">$SHORT</div><div class="post-sub">$sub</div></div></div>
+<div class="post-head"><div class="post-av"><img src="/assets/logo.png" alt="Logo $SHORT" width="40" height="40"></div><div><div class="post-name">$SHORT</div><div class="post-sub">$sub</div></div></div>
 <div class="post-body">
 $a{html}
 </div>$img$bar
@@ -114,7 +117,7 @@ $ld</head>
 <div class="top-actions"><a class="btn btn-grey" href="$WA" target="_blank" rel="noopener">WhatsApp</a><a class="btn btn-blue" href="tel:$TEL">📞 $TELH</a></div>
 </div></header>
 <section class="profile"><div class="profile-in">
-<div class="cover"><img src="/assets/cover.jpg" alt="Abschleppwagen mit geladenem Auto auf der Landstraße" width="1600" height="1200" fetchpriority="high"></div>
+<div class="cover"><img src="/assets/cover-1200.webp" srcset="/assets/cover-800.webp 800w, /assets/cover-1200.webp 1200w" sizes="(max-width:1100px) 100vw, 1100px" alt="Abschleppwagen mit geladenem Auto auf der Landstraße" width="1200" height="900" fetchpriority="high"></div>
 <div class="head">
 <div class="avatar"><img src="/assets/logo.png" alt="$SHORT" width="168" height="168"></div>
 <div class="head-text"><h1>$p{h1}</h1>
@@ -194,7 +197,7 @@ sub faq_ld {
   } @$faq_items;
   return qq{<script type="application/ld+json">{"\@context":"https://schema.org","\@type":"FAQPage","mainEntity":[$items]}</script>\n};
 }
-my $org_ld = qq{<script type="application/ld+json">{"\@context":"https://schema.org","\@type":"AutomotiveBusiness","\@id":"$SITE/#business","name":"$SHORT","url":"$SITE/","telephone":"$TELH","email":"$MAIL","image":"$SITE/assets/cover.jpg","openingHours":"Mo-Su 00:00-23:59","areaServed":[{"\@type":"AdministrativeArea","name":"Landkreis Schaumburg"},{"\@type":"City","name":"Hannover"},{"\@type":"City","name":"Minden"}],"parentOrganization":{"\@type":"Organization","name":"Faster Abschleppdienst","url":"https://abschleppdienst-faster.de/"}}</script>\n};
+my $org_ld = qq{<script type="application/ld+json">{"\@context":"https://schema.org","\@type":"AutomotiveBusiness","\@id":"$SITE/#business","name":"$SHORT","url":"$SITE/","telephone":"$TELH","email":"$MAIL","image":"$SITE/assets/cover.jpg","openingHours":"Mo-Su 00:00-23:59","areaServed":[{"\@type":"AdministrativeArea","name":"Landkreis Schaumburg"},{"\@type":"City","name":"Hannover"},{"\@type":"City","name":"Minden"}]}</script>\n};
 
 my $notice = <<'H';
 <div class="card notice">
@@ -301,6 +304,7 @@ page(
 <p>Steht das Auto gefährlich oder blockiert eine Spur, kann die Polizei einen Abschleppdienst bestimmen. Steht es sicher auf dem Standstreifen, dürfen Sie selbst entscheiden, wen Sie anrufen – den ADAC, Ihren Schutzbrief oder uns.</p>
 <p>Selbst abschleppen mit Seil oder Stange ist auf der Autobahn nur bis zur nächsten Ausfahrt erlaubt. Ehrlich gesagt: Bei dem Verkehr auf der A2 raten wir davon ab.</p>
 <h3>Ihren Standort finden</h3>
+<p>Haben Sie es noch bis zur Raststätte geschafft? Dann lesen Sie <a href="/a2-rasthof-garbsen-lauenau/">Panne an der Raststätte Garbsen oder bei Lauenau</a>.</p>
 <p>Am rechten Fahrbahnrand stehen alle paar hundert Meter kleine Kilometerschilder. Sagen Sie uns die Zahl, die Fahrtrichtung (zum Beispiel „Richtung Dortmund“ oder „Richtung Berlin“) und die letzte Ausfahrt, an der Sie vorbeigekommen sind. Noch einfacher: Live-Standort per WhatsApp.</p>
 H
 );
@@ -330,6 +334,97 @@ H
 
 # ---------- Regions ----------
 my %R = (
+  'porta-westfalica-bad-oeynhausen' => {
+    title => 'Abschleppdienst Porta Westfalica & Bad Oeynhausen 24/7',
+    desc  => "Panne in Porta Westfalica, Bad Oeynhausen oder am Kreuz A2/A30? Abschleppdienst rund um die Uhr, Preis vor der Fahrt. $TELH",
+    cities => ['Porta Westfalica', 'Bad Oeynhausen'],
+    html  => <<'H',
+<h2>Abschleppdienst in Porta Westfalica und Bad Oeynhausen</h2>
+<p>Bei Porta Westfalica bricht die Weser durch das Weser- und Wiehengebirge. Oben auf dem Wittekindsberg steht das Kaiser-Wilhelm-Denkmal, unten teilen sich Fluss, Bahn, Bundesstraßen und die A2 den engen Durchgang. Für Autofahrer heißt das: viel Verkehr auf wenig Platz, und nach einer Panne gibt es oft keine Ausweichmöglichkeit. Wir vermitteln rund um die Uhr Pannenhilfe und Abschleppen in Porta Westfalica, in Bad Oeynhausen und auf der Autobahn dazwischen.</p>
+<h3>A2, A30 und das Kreuz Bad Oeynhausen</h3>
+<p>Die A2 verläuft südlich von Minden durch Porta Westfalica und weiter nach Bad Oeynhausen. Am Kreuz Bad Oeynhausen zweigt die A30 Richtung Osnabrück ab. Seit die Nordumgehung fertig ist, rollt der Fernverkehr nicht mehr mitten durch die Kurstadt, dafür sind Kreuz und Rampen jetzt die Stellen, an denen es eng wird. Auf den Verbindungsrampen gibt es kaum Platz zum Halten.</p>
+<p>Bleiben Sie dort liegen: Warnblinker an, Warnweste an, alle Insassen hinter die Leitplanke, erst dann anrufen. Sagen Sie uns, ob Sie auf der A2 oder der A30 stehen, in welche Richtung Sie fahren, zum Beispiel „A2 Richtung Hannover“ oder „A30 Richtung Osnabrück“, und welche Anschlussstelle zuletzt kam. Die kleinen Kilometerschilder am Fahrbahnrand helfen dem Fahrer, Sie auf Anhieb zu finden. Noch einfacher ist der Live-Standort per WhatsApp.</p>
+<h3>Bundesstraßen und Ortsteile</h3>
+<p>Abseits der Autobahn haben wir die meisten Einsätze auf der B 61 zwischen Minden und Bad Oeynhausen und auf der B 482, die an der Anschlussstelle Porta Westfalica beginnt und an der Weser entlang nach Norden führt. Wer auf der Bundesstraße liegen bleibt, stellt das Warndreieck außerorts mit etwa 100 Metern Abstand auf und wartet hinter der Leitplanke oder abseits der Fahrbahn.</p>
+<p>In Porta Westfalica helfen wir in allen Ortsteilen, von Barkhausen und Hausberge über Lerbeck, Neesen und Holzhausen bis Eisbergen, Veltheim und Möllbergen. In Bad Oeynhausen kommen wir genauso nach Rehme an der Weser, nach Eidinghausen, Dehme, Werste, Lohe oder Volmerdingsen.</p>
+<h3>Typische Einsätze</h3>
+<ul>
+<li>Panne im Berufsverkehr auf der A2 zwischen Porta Westfalica und Bad Oeynhausen, oft mit vielen LKW auf der rechten Spur</li>
+<li>Auto springt nach einem Termin nicht an, etwa auf einem Parkplatz am Kurpark oder am Herz- und Diabeteszentrum in Bad Oeynhausen</li>
+<li>Reifenpanne auf der B 61 oder auf dem Weg über die Weser</li>
+<li>Abschleppen zur eigenen Werkstatt in Minden, Bad Oeynhausen oder zurück nach Schaumburg</li>
+</ul>
+<h3>Über die Landesgrenze</h3>
+<p>Porta Westfalica und Bad Oeynhausen gehören zu Nordrhein-Westfalen und zum Kreis Minden-Lübbecke. Unser Schwerpunkt liegt gleich nebenan in Schaumburg in Niedersachsen. Für Sie spielt die Grenze keine Rolle: Wir rufen den Betrieb an, der am schnellsten bei Ihnen sein kann, egal auf welcher Seite. Den Preis hören Sie vorher am Telefon, auch wenn das Auto über die Grenze in eine Werkstatt nach <a href="/abschleppdienst-bueckeburg/">Bückeburg</a> oder <a href="/abschleppdienst-rinteln/">Rinteln</a> soll. Nach Norden schließt <a href="/abschleppdienst-minden/">Minden</a> direkt an.</p>
+<h3>Was Sie bereithalten sollten</h3>
+<p>Ihren Standort, Modell und Kennzeichen, was passiert ist, zum Beispiel ein Geräusch, eine Warnleuchte, Rauch oder ein Unfall, und wohin das Auto soll. Sind Sie im ADAC oder haben Sie einen Schutzbrief, rufen Sie zuerst dort an, dann zahlt meistens der Club oder die Versicherung. Sind Sie nicht abgesichert oder dauert es Ihnen dort zu lange, helfen wir weiter.</p>
+H
+    faq => [
+      ['Helfen Sie auch am Kreuz Bad Oeynhausen?', 'Ja. Sagen Sie uns, ob Sie auf der A2 oder der A30 stehen, die Fahrtrichtung und die letzte Anschlussstelle. Gehen Sie zuerst hinter die Leitplanke.'],
+      ['Kostet es mehr, weil Porta Westfalica in NRW liegt?', 'Nein, die Landesgrenze ändert nichts. Der Preis hängt von Strecke, Uhrzeit und Fahrzeug ab und wird vor der Fahrt genannt.'],
+      ['Können Sie mein Auto nach Schaumburg bringen?', 'Ja, zum Beispiel in eine Werkstatt in Bückeburg, Rinteln oder Stadthagen oder zu Ihnen nach Hause.'],
+    ],
+  },
+  'hameln' => {
+    title => 'Abschleppdienst Hameln 24/7 – Pannenhilfe an der Weser',
+    desc  => "Panne in Hameln, auf der B 83, B 1 oder B 217? Abschleppdienst und Pannenhilfe rund um die Uhr, Preis vor der Fahrt. $TELH",
+    html  => <<'H',
+<h2>Abschleppdienst in Hameln</h2>
+<p>Hameln ist die Kreisstadt des Landkreises Hameln-Pyrmont und liegt an der Weser, etwa eine halbe Stunde weseraufwärts von Rinteln. Eine Autobahn gibt es hier nicht. Der Verkehr läuft über Bundesstraßen: die B 83 an der Weser entlang Richtung Rinteln und Höxter, die B 1 Richtung Hildesheim und die B 217 über Springe nach Hannover. Auf diesen Straßen, in der Altstadt und in den Ortsteilen vermitteln wir rund um die Uhr Pannenhilfe und Abschleppen.</p>
+<h3>Landstraße statt Autobahn: so sichern Sie sich</h3>
+<p>Auf B 83, B 1 und B 217 gibt es meist keinen Standstreifen. Rollen Sie, wenn es noch geht, auf einen Parkplatz, in eine Einfahrt oder auf einen Feldweg. Warnblinker an, Warnweste an und das Warndreieck außerorts mit etwa 100 Metern Abstand aufstellen, in Kurven eher mehr. Warten Sie hinter der Leitplanke oder neben der Straße, nicht im Auto. Nachts und bei Nebel im Wesertal ist das besonders wichtig.</p>
+<h3>In der Altstadt</h3>
+<p>Rund um die Osterstraße und den Pferdemarkt ist die Hamelner Altstadt zu großen Teilen Fußgängerzone, dazu kommen enge Gassen und Parkhäuser mit niedriger Einfahrt. Steht Ihr Auto dort, sagen Sie uns bitte genau, wo: Parkhaus, Etage und Einfahrtshöhe, wenn Sie sie sehen. Dann schickt der Partner einen Wagen, der wirklich hineinpasst, und nicht den großen Abschleppwagen, der vor der Schranke stehen bleibt.</p>
+<h3>Ortsteile und Nachbarorte</h3>
+<p>Wir helfen in allen Ortsteilen, zum Beispiel in Afferde, Klein Berkel, Rohrsen, Tündern, Hastenbeck oder Halvestorf, und in den Nachbargemeinden Emmerthal, Aerzen und Hessisch Oldendorf. Im Weserbergland sind die Wege zwischen den Dörfern oft länger als gedacht. Am Telefon sagen wir Ihnen ehrlich, wie lange es ungefähr dauert, statt eine Zahl zu versprechen, die nicht hält.</p>
+<h3>Typische Einsätze in Hameln</h3>
+<ul>
+<li>Batterie leer nach einer kalten Nacht: Starthilfe vor der Haustür oder auf dem Firmenparkplatz</li>
+<li>Panne auf der B 83 zwischen Hameln und Hessisch Oldendorf oder auf dem Weg nach Rinteln</li>
+<li>Motorrad liegengeblieben auf einer Tour durchs Weserbergland: Transport auf dem Plateau, nicht am Seil</li>
+<li>Abschleppen aus einem Parkhaus in der Innenstadt</li>
+<li>Auto nach einem kleinen Unfall nicht mehr fahrbereit: Transport zur Werkstatt Ihrer Wahl</li>
+</ul>
+<h3>Wohin mit dem Auto?</h3>
+<p>Meist bringt der Partner Ihr Auto in eine Werkstatt in Hameln. Möchten Sie lieber in Ihre eigene Werkstatt, etwa nach <a href="/abschleppdienst-rinteln/">Rinteln</a> oder <a href="/abschleppdienst-stadthagen/">Stadthagen</a>, ist das genauso möglich. Den Preis für die Strecke nennen wir vorher. Nachts kann das Auto zuerst zu Ihnen nach Hause und am nächsten Werktag weiter.</p>
+<p>Wenn Sie ADAC-Mitglied sind oder einen Schutzbrief haben, rufen Sie zuerst dort an. Sonst rufen Sie uns an oder schicken eine WhatsApp mit Ihrem Standort.</p>
+H
+    faq => [
+      ['Wie schnell ist jemand in Hameln?', 'Das hängt davon ab, wo genau Sie stehen und welcher Betrieb frei ist. Am Telefon bekommen Sie eine ehrliche Schätzung.'],
+      ['Mein Auto steht in einem Parkhaus in der Altstadt. Geht das?', 'Oft ja. Sagen Sie uns Parkhaus, Etage und Einfahrtshöhe, dann kommt ein passendes, niedriges Fahrzeug.'],
+      ['Transportieren Sie auch Motorräder?', 'Ja, auf dem Plateau und gesichert. Sagen Sie uns Modell und ob das Motorrad noch rollt.'],
+    ],
+  },
+  'wunstorf-barsinghausen' => {
+    title => 'Abschleppdienst Wunstorf & Barsinghausen 24/7',
+    desc  => "Panne in Wunstorf, Steinhude, Barsinghausen oder an der A2 bei Kolenfeld und Luthe? Abschleppdienst rund um die Uhr. $TELH",
+    cities => ['Wunstorf', 'Barsinghausen'],
+    html  => <<'H',
+<h2>Abschleppdienst in Wunstorf und Barsinghausen</h2>
+<p>Wunstorf und Barsinghausen liegen westlich von Hannover, zwischen dem Steinhuder Meer im Norden und dem Deister im Süden. Dazwischen verläuft die A2 mit den Anschlussstellen Wunstorf-Kolenfeld und Wunstorf-Luthe. Wir vermitteln rund um die Uhr Pannenhilfe und Abschleppen in beiden Städten, in den Dörfern drumherum und auf der Autobahn.</p>
+<h3>Auf der A2 zwischen Bad Nenndorf und Garbsen</h3>
+<p>Auf diesem Abschnitt ist sehr viel LKW-Verkehr unterwegs. Bei einer Panne: Warnblinker an, auf den Standstreifen, Warnweste anziehen und auf der Beifahrerseite aussteigen. Alle Insassen hinter die Leitplanke, dann das Warndreieck mit großem Abstand aufstellen. Erst danach anrufen. Sagen Sie uns die Fahrtrichtung, zum Beispiel „Richtung Hannover“ oder „Richtung Dortmund“, und ob Kolenfeld oder Luthe die letzte Ausfahrt war. Mehr dazu auf unserer Seite <a href="/panne-a2/">Panne auf der A2</a>. Haben Sie es noch bis zur Raststätte geschafft, lesen Sie <a href="/a2-rasthof-garbsen-lauenau/">Panne an der Raststätte Garbsen oder bei Lauenau</a>.</p>
+<h3>Wunstorf und Steinhude</h3>
+<p>In Wunstorf helfen wir in der Kernstadt und in allen Ortsteilen, darunter Luthe, Kolenfeld, Idensen, Bokeloh, Klein Heidorn und Großenheidorn. Im Sommer ist in Steinhude am Steinhuder Meer viel los: volle Parkplätze an der Promenade, Ausflügler mit Wohnmobil und Wohnwagen. Bleibt dort ein Gespann liegen, sagen Sie uns Länge und ungefähres Gewicht, damit ein Betrieb mit passendem Fahrzeug kommt. In die Stadt führt außerdem die B 441 aus Richtung Hannover.</p>
+<h3>Barsinghausen am Deister</h3>
+<p>Barsinghausen liegt am Nordhang des Deisters. Die Straßen hinauf in den Wald sind kurvig und steil und im Winter schnell glatt. Wer dort mit leerer Batterie oder festgefahren am Waldparkplatz steht, braucht oft nur Starthilfe oder ein kurzes Herausziehen. Wir helfen auch in den Ortsteilen, zum Beispiel in Egestorf, Kirchdorf, Bantorf, Groß Munzel, Hohenbostel, Langreder oder Stemmen.</p>
+<h3>Typische Einsätze</h3>
+<ul>
+<li>Panne auf der A2 zwischen den Anschlussstellen Wunstorf-Kolenfeld und Wunstorf-Luthe</li>
+<li>Wohnmobil oder Wohnwagen am Steinhuder Meer liegengeblieben</li>
+<li>Auto springt am Bahnhofsparkplatz in Wunstorf oder Barsinghausen nach dem Feierabend nicht an</li>
+<li>Glätte am Deister: Auto steckt fest oder ist in den Graben gerutscht</li>
+<li>Abschleppen in eine Werkstatt in Wunstorf, Barsinghausen, Garbsen oder Hannover</li>
+</ul>
+<h3>Preis und Ablauf</h3>
+<p>Sie rufen an oder schicken eine WhatsApp mit Live-Standort. Wir fragen nach Fahrzeug, Problem und Ziel und nennen Ihnen den Preis, bevor jemand losfährt. Dann rufen wir einen Betrieb aus der Nähe an, zum Beispiel aus Wunstorf, <a href="/abschleppdienst-bad-nenndorf/">Bad Nenndorf</a> oder <a href="/abschleppdienst-hannover/">Hannover</a>, und bleiben erreichbar, bis Ihr Auto steht, wo es hin soll. Sind Sie im ADAC oder haben Sie einen Schutzbrief, rufen Sie zuerst dort an.</p>
+H
+    faq => [
+      ['Helfen Sie auch am Steinhuder Meer?', 'Ja, in Steinhude, Großenheidorn und rund um den See. Bei Wohnmobil oder Gespann bitte Länge und Gewicht nennen.'],
+      ['Ich stehe auf der A2 bei Kolenfeld. Was sage ich am Telefon?', 'Fahrtrichtung, die letzte Ausfahrt und die Zahl auf dem nächsten Kilometerschild. Vorher hinter die Leitplanke gehen.'],
+      ['Ziehen Sie auch Autos am Deister heraus?', 'Ja, wenn ein Partner mit passendem Fahrzeug frei ist. Ein Foto per WhatsApp hilft, die Lage einzuschätzen.'],
+    ],
+  },
   'auetal' => {
     title => 'Abschleppdienst Auetal & Rehren 24/7 – auch auf der A2',
     desc  => "Panne in Auetal, Rehren oder auf der A2? Abschleppdienst und Pannenhilfe rund um die Uhr, Preis vor der Fahrt. $TELH",
@@ -453,7 +548,8 @@ sub region_faq_html {
 }
 sub region_ld {
   my ($slug, $name) = @_;
-  my $ld = qq{<script type="application/ld+json">{"\@context":"https://schema.org","\@type":"Service","serviceType":"Abschleppdienst und Pannenhilfe","name":"Abschleppdienst $name","url":"$SITE/abschleppdienst-$slug/","areaServed":{"\@type":"City","name":"$name"},"provider":{"\@id":"$SITE/#business"},"availableChannel":{"\@type":"ServiceChannel","servicePhone":{"\@type":"ContactPoint","telephone":"$TELH","contactType":"customer service","hoursAvailable":"Mo-Su 00:00-23:59"}}}</script>\n};
+  my $area = $R{$slug}{cities} ? '[' . join(',', map { qq{{"\@type":"City","name":"$_"}} } @{$R{$slug}{cities}}) . ']' : qq{{"\@type":"City","name":"$name"}};
+  my $ld = qq{<script type="application/ld+json">{"\@context":"https://schema.org","\@type":"Service","serviceType":"Abschleppdienst und Pannenhilfe","name":"Abschleppdienst $name","url":"$SITE/abschleppdienst-$slug/","areaServed":$area,"provider":{"\@id":"$SITE/#business"},"availableChannel":{"\@type":"ServiceChannel","servicePhone":{"\@type":"ContactPoint","telephone":"$TELH","contactType":"customer service","hoursAvailable":"Mo-Su 00:00-23:59"}}}</script>\n};
   my $q = $R{$slug}{faq};
   if ($q) {
     my $items = join ',', map { (my $a1 = $_->[0]) =~ s/"/\\"/g; (my $b1 = $_->[1]) =~ s/"/\\"/g; qq{{"\@type":"Question","name":"$a1","acceptedAnswer":{"\@type":"Answer","text":"$b1"}}} } @$q;
@@ -479,8 +575,53 @@ page(
   h1 => 'Einsatzgebiet',
   feed => post(sub => 'Regionen', html => '<h2>Hier vermitteln wir Hilfe</h2><p>Unser Schwerpunkt ist der Landkreis Schaumburg und die A2 zwischen Hannover und Bad Oeynhausen. Wählen Sie Ihren Ort:</p><ul>'
     . join('', map { qq{<li><a href="/abschleppdienst-$_->[0]/">Abschleppdienst $_->[1]</a></li>} } @REGIONS)
-    . '<li><a href="/panne-a2/">Panne auf der A2</a></li></ul><p>Ihr Ort fehlt? Rufen Sie trotzdem an. Wir sagen Ihnen ehrlich, ob wir einen Partner in Ihrer Nähe haben.</p>'),
+    . '<li><a href="/panne-a2/">Panne auf der A2</a></li><li><a href="/a2-rasthof-garbsen-lauenau/">Panne an der Raststätte Garbsen oder bei Lauenau</a></li></ul><p>Ihr Ort fehlt? Rufen Sie trotzdem an. Wir sagen Ihnen ehrlich, ob wir einen Partner in Ihrer Nähe haben.</p>'),
 );
+
+# ---------- Panne A2 Raststätte Garbsen / Lauenau ----------
+page(
+  path => '/a2-rasthof-garbsen-lauenau/', tab => '/panne-a2/',
+  title => 'Panne A2 Rasthof Garbsen & Lauenau – Hilfe 24/7',
+  desc  => 'Liegengeblieben an der Raststätte Garbsen oder bei Lauenau an der A2? So geben Sie den Standort richtig durch und bekommen schnell Hilfe.',
+  h1 => 'Panne an der Raststätte Garbsen oder bei Lauenau',
+  feed => post(sub => 'A2 · Garbsen – Bad Nenndorf – Lauenau', html => <<'H')
+<h2>Gerade noch bis zur Raststätte geschafft</h2>
+<p>Viele Pannen auf der A2 westlich von Hannover enden nicht auf dem Standstreifen, sondern auf einem Parkplatz: an der Raststätte Garbsen am Stadtrand von Hannover oder nach der Ausfahrt Lauenau zwischen Bad Nenndorf und Auetal. Das ist gut so. Auf einer Raststätte stehen Sie sicher, es gibt Licht, Toiletten und meistens etwas zu essen. Trotzdem gibt es ein paar Dinge, die Sie wissen sollten, damit der Abschleppwagen Sie schnell findet.</p>
+<h3>Leuchtet eine Warnleuchte? Lieber zur Raststätte als auf den Standstreifen</h3>
+<p>Wenn das Auto noch sicher fährt, etwa bei einer gelben Motorkontrollleuchte oder einem schleichenden Reifen, fahren Sie lieber vorsichtig bis zur nächsten Raststätte oder Ausfahrt, als auf dem Standstreifen anzuhalten. Bei roten Warnleuchten für Öldruck oder Bremsen, bei Rauch oder starkem Ruckeln gilt das nicht: dann sofort rechts ran, sichern und hinter die Leitplanke.</p>
+<h3>Raststätte Garbsen: welche Seite?</h3>
+<p>Die Raststätte Garbsen hat zwei Seiten, Garbsen Nord und Garbsen Süd, eine für jede Fahrtrichtung. Für Autos sind die beiden Seiten in der Regel nicht miteinander verbunden. Das heißt: Der Abschleppwagen muss in Ihrer Fahrtrichtung auf die Autobahn und in die richtige Raststätte fahren. Sagen Sie uns deshalb immer, in welche Richtung Sie unterwegs waren, also Richtung Hannover und Berlin oder Richtung Bad Nenndorf und Dortmund, und auf welcher Seite Sie stehen. Ein Live-Standort per WhatsApp klärt das sofort.</p>
+<h3>Bei Lauenau von der Autobahn</h3>
+<p>Weiter westlich, zwischen Bad Nenndorf und Auetal, fahren viele Fahrer bei Problemen an der Anschlussstelle Lauenau ab, um abseits der Autobahn sicher anzuhalten. Auch hier hilft uns eine genaue Angabe: an welcher Straße Sie stehen, ob auf einem Parkplatz oder am Straßenrand, und wie Sie dorthin gefahren sind. Von Lauenau aus ist ein Betrieb aus <a href="/abschleppdienst-bad-nenndorf/">Bad Nenndorf</a> oder <a href="/abschleppdienst-auetal/">Auetal</a> meist nicht weit.</p>
+<h3>Wer Sie auf dem Rasthof abschleppen darf</h3>
+<p>Auf der Raststätte stehen Sie nicht mehr auf der Fahrbahn. Sie entscheiden also selbst, wen Sie rufen: den ADAC, Ihren Schutzbrief oder uns. Anders ist es, wenn das Auto auf dem Standstreifen oder einer Fahrspur steht und die Polizei einen Abschleppdienst bestellt. Auf dem Parkplatz einer Raststätte gelten in der Regel Höchstparkdauern. Bleibt das Auto über Nacht stehen, fragen Sie an der Tankstelle oder beim Betreiber nach, oder lassen Sie es gleich abholen.</p>
+<h3>Während Sie warten</h3>
+<ul>
+<li>Bleiben Sie im beleuchteten Bereich nahe dem Gebäude, besonders nachts.</li>
+<li>Schlüssel, Fahrzeugschein und Ausweis bereithalten, Wertsachen aus dem Auto nehmen.</li>
+<li>Kennzeichen, Farbe und Modell des Autos parat haben, damit der Fahrer es auf dem vollen LKW-Parkplatz schnell findet.</li>
+<li>Kinder und Haustiere nicht zwischen den Parkreihen herumlaufen lassen, dort rangieren ständig LKW.</li>
+</ul>
+<h3>Mit Transporter, Wohnmobil oder Anhänger</h3>
+<p>Auf dem LKW-Parkplatz der Raststätte stehen oft Transporter, Wohnmobile und Gespanne. Für sie braucht der Partner ein größeres Fahrzeug als für einen Kleinwagen. Nennen Sie uns deshalb Modell, ungefähres Gewicht und ob ein Anhänger dabei ist. Dann kommt gleich der passende Wagen, und niemand muss zweimal fahren.</p>
+<h3>Und dann?</h3>
+<p>Wir nennen Ihnen den Preis am Telefon, bevor jemand losfährt. Ihr Auto kommt in eine Werkstatt in der Nähe, etwa in Garbsen, <a href="/abschleppdienst-wunstorf-barsinghausen/">Wunstorf</a> oder <a href="/abschleppdienst-hannover/">Hannover</a>, oder zu Ihnen nach Hause. Brauchen Sie selbst eine Weiterfahrt, fragen Sie den Fahrer, ob er Sie bis zum nächsten Bahnhof mitnimmt. Die allgemeinen Regeln für eine Panne auf der Autobahn stehen unter <a href="/panne-a2/">Panne auf der A2</a>.</p>
+H
+);
+
+# ---------- old URLs from the former Autohaus Bredemeier site ----------
+my %OLD = (
+  '/kfz-werkstatt-2/' => '/pannenhilfe/', '/fahrzeugtuning/' => '/pannenhilfe/',
+  '/autovermietung/' => '/', '/vermietung/' => '/', '/mietmodelle-fuer-2-pferde/' => '/',
+  '/mietmodelle-fuer-3-pferde/' => '/', '/unser-team/' => '/', '/karriere/' => '/',
+);
+for my $old (sort keys %OLD) {
+  my $to = $OLD{$old}; my $file = ".${old}index.html";
+  make_path(".$old") unless -d ".$old";
+  open my $fh, '>:encoding(UTF-8)', $file or die "$file: $!";
+  print $fh qq{<!doctype html>\n<html lang="de">\n<head>\n<meta charset="utf-8">\n<title>$SHORT</title>\n<link rel="canonical" href="$SITE$to">\n<meta http-equiv="refresh" content="0; url=$to">\n</head>\n<body><p>Diese Seite gibt es nicht mehr. Weiter zu <a href="$to">$SITE$to</a>.</p></body>\n</html>\n};
+  close $fh;
+}
 
 # ---------- contact & legal ----------
 page(
